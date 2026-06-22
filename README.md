@@ -105,7 +105,7 @@ The input check returns a nonzero status when core files or packages are missing
 `src/stata/04_threshold_10.do` fits survey-weighted logistic regression models for:
 
 1. HBV infection: HBsAg signal-to-cutoff ratio (S/CO) `> 1`.
-2. HBV infection: HBsAg S/CO `>= 10`.
+2. HBV infection: HBsAg S/CO `> 10`.
 3. Vaccine-mediated immunity: HBsAg S/CO `< 10`, anti-HBs positive, and anti-HBc negative.
 4. HBV exposure and clearance: HBsAg S/CO `< 10` and anti-HBc positive.
 5. Susceptible: HBsAg S/CO `< 10`, anti-HBc negative, and anti-HBs negative.
