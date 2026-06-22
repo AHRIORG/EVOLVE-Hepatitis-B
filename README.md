@@ -113,7 +113,7 @@ The input check returns a nonzero status when core files or packages are missing
 
 The internal names `vax_med_immune_ge10`, `hbvexpo_clear_ge10`, and `susceptible_ge10` indicate that an HBsAg threshold of 10 defines infection; consequently, participants assigned to the three non-infection outcomes have HBsAg S/CO `< 10`.
 
-The adjusted models include age at enrolment, HBV vaccine age epoch, sex, education, socioeconomic status, alcohol intake, HIV status, BMI category, hypertension, diabetes, and smoking.
+The adjusted models include  HBV vaccine age epoch, sex, education, socioeconomic status, alcohol intake, HIV status, BMI category, hypertension, diabetes, and smoking.
 
 Smoking is modelled as:
 
@@ -139,8 +139,6 @@ These directories are excluded from version control by default. Only disclosure-
 - Derived variables are dropped or safely replaced before recreation, preventing stale variables from contaminating repeated runs.
 - Generated Stata variables matching `__0*` are removed before relevant exports.
 - Raw data, derived participant-level data, logs, and generated outputs are ignored by Git.
-
-Known verification limits and completed cleanup are recorded in [`docs/reproducibility_audit.md`](docs/reproducibility_audit.md).
 
 ## Data availability
 
