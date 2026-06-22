@@ -11,8 +11,7 @@ Purpose:
         - Vaccine-mediated immunity, Exposure & clearance, Susceptible
    3) Estimate weighted prevalence overall & stratified
    4) Fit prespecified multivariable models (no univariate fishing)
-   5) Case–control subset: describe virology & ALT
-   6) Treatment eligibility: **APPLY ONLY to S/CO > 10** (confirmed)
+   5) Treatment eligibility: **APPLY ONLY to S/CO > 10** (confirmed)
 ***********************************************************************/
 
 version 18
@@ -23,6 +22,9 @@ set linesize 255
 /*==============================*
  | 0. Paths & logging
  *==============================*/
+cd "/Users/lusandamazibuko/Library/CloudStorage/OneDrive-AHRI/Documents/EVOLVE Vukuzazi/evolve-hepatitis-b"
+do "src/stata/00_preflight.do"
+do "src/stata/00_run_all.do"
 do "src/stata/_config.do"
 
 capture log close _all
@@ -697,7 +699,7 @@ margins, at(hbvdob=(0 1 2)) post
 marginsplot, name(mp_hbvdob, replace)
 
 /*==============================*
- | 10. Case–control subset data
+ | 10. Case subset data for treatement eligibility assessment 
  *==============================*/
 
 /* Cases (lab-confirmed set file) */
@@ -742,7 +744,7 @@ label var status "Case or control status"
 svyset [pweight=totwt]
 
 /*==============================*
- | 11. Virology & ALT handling (case–control)
+ | 11. Virology & ALT handling (treatment eligibility)
  *==============================*/
 
 /* HBV DNA VL harmonisation */
@@ -840,20 +842,10 @@ svy: proportion hbvlcat if status==1 & hivstat==0
 svy, over(onart): proportion hbvlcat if status==1 & hivstat==1
 svy: mean alt_u_l if status==1 & hivstat==0
 
-/*==============================*
- | 13. Elevated ALT models (optional, survey-weighted)
- *==============================*/
-svy: logistic ALT_category i.hbvdob i.hivstat i.sex ib2.bmicat i.hypertension i.diabetic if status==1
-eststo alt_who
-
-svy: logistic nhls_altcat i.hbvdob i.hivstat i.sex ib2.bmicat i.hypertension i.diabetic if status==1
-eststo alt_nhls
-
-*esttab alt_who alt_nhls using "$OUT/alt_models.rtf", ///
-    eform b(3) ci(3) p(3) title("Elevated ALT models (WHO vs NHLS ULN)") replace
+/
 
 /*==============================*
- | 14. Close
+ | 13. Close
  *==============================*/
 log close
 display as text "Analysis complete. Outputs in: $OUT"

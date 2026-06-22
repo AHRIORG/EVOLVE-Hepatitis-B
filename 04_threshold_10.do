@@ -2,16 +2,16 @@
  /**********************************************************************
  EVOLVE HBV STUDY – Paper model table plus S/CO>=10 sensitivity
  Author         : Lusanda Sanda Mazibuko
- Purpose (this block):
+ Purpose:
    1) Construct S/CO-based outcomes using HBsAg numeric S/CO
       - HBV infection (S/CO>1)
-      - HBV infection (S/CO>=10)  [CONFIRMED]
+      - HBV infection (S/CO>10)  
       - Paper table outcomes for vaccine-mediated immunity, exposure & clearance,
         and susceptible use the confirmed-negative framework: HBsAg S/CO <10.
    2) Fit prespecified multivariable models (svy: logistic)
    3) Export a publication-style table with Reference rows
 
- ASSUMES in memory (from your pipeline):
+ ASSUMES in memory:
    - totwt
    - hbv_num (HBsAg S/CO numeric) OR hbsag_result to parse
    - hbsag_interpretation hbsab_interpretation anti_hbcii_interpretation
@@ -77,8 +77,8 @@ gen byte _miss_ahbc  = inlist(_ahbc_i ,"","insufficient","equivocal")
 **********************************************************************/
 capture drop hbv_inf_gt1 hbv_inf_ge10 hbv_neg_lt10
 gen byte hbv_inf_gt1  = (hbv_num >  1) if hbv_num < .
-gen byte hbv_inf_ge10 = (hbv_num >= 10) if hbv_num < .
-gen byte hbv_neg_lt10 = (hbv_num <  10) if hbv_num < .
+gen byte hbv_inf_ge10 = (hbv_num > 10) if hbv_num < .
+gen byte hbv_neg_lt10 = (hbv_num <=  10) if hbv_num < .
 label values hbv_inf_gt1 hbv_inf_ge10 hbv_neg_lt10 yesno
 
 capture drop vax_med_immune_ge10
@@ -167,14 +167,13 @@ if _rc {
 local covars ""
 
 foreach spec in ///
-    "ageatenrolment:c." ///
     "hbvdob:i." ///
     "sex:i." ///
     "educ_recoded:i." ///
     "sescat:i." ///
     "drink3cat:i." ///
     "hivstat:i." ///
-    "bmicat:i." ///
+    "bmicat:ib2." ///
     "hypertension:i." ///
     "diabetic:i." {
     gettoken v prefix : spec, parse(":")
@@ -211,7 +210,7 @@ di as text "============================================================"
 svy: logistic hbv_inf_gt1 `covars', baselevels
 
 di as text _newline(2) "============================================================"
-di as text "MODEL 2: HBV infection (HBsAg S/CO >= 10)"
+di as text "MODEL 2: HBV infection (HBsAg S/CO > 10)"
 di as text "============================================================"
 svy: logistic hbv_inf_ge10 `covars', baselevels
 
