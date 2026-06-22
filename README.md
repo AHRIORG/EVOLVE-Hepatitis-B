@@ -24,7 +24,6 @@ This repository contains the Stata and R workflows used to construct the study c
     `-- stata/
 ```
 
-The complete input manifest is available in [`config/data_manifest.csv`](config/data_manifest.csv).
 
 ## Software requirements
 
